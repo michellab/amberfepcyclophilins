@@ -1,0 +1,13 @@
+source leaprc.protein.ff14SB 
+source leaprc.gaff 
+source leaprc.water.tip3p 
+loadAmberParams frcmod.ionsjc_tip3p
+loadAmberParams A4A.frcmod
+loadoff A4A.lib
+complex = loadpdb cypD_A4A.pdb
+addIons complex Cl- 4
+solvateOct complex TIP3PBOX 12.0
+addIonsRand complex Na+ 25 Cl- 25
+savepdb complex cypD_A4A_water.pdb 
+saveamberparm complex cypD_A4A_water.parm7 cypD_A4A_water.rst7
+quit

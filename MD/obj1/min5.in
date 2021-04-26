@@ -1,0 +1,9 @@
+minimisation - whole system
+&cntrl
+ imin=1, ntx=1, ntmin=2, 
+ ntpr=50,  
+ ntf=1,  
+ ntb=1, ntp=0, 
+ cut=10,  
+ maxcyc=20000, 
+/

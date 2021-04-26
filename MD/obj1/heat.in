@@ -1,0 +1,27 @@
+heating and NVT eq
+ &cntrl
+   imin = 0, ntx = 1, irest = 0,
+   nstlim = 10000,   dt = 0.002,
+   ntwe = 500, ntwx = 500, ntpr = 500, ntwr = 500,
+   ntc=2, ntf=2,
+   ntb=1, ntp=0,
+   ntt=3, tempi=0.0, temp0=300,
+   gamma_ln=2, ig=-1,
+   nmropt = 1,
+   ntr = 1, restraint_wt = 5.0, restraintmask=':1-167',
+   cut=10.0,
+ /
+ &ewald
+ / 
+ &wt
+   type='TEMP0',
+   istep1 = 0, istep2 = 8000,                                      
+   value1 = 0, value2 = 300.0
+ /
+  &wt
+   type='TEMP0',
+   istep1=8001, istep2=10000,
+   value1=300.0,value2=300.0, 
+ /
+ &wt type = 'END'
+ /

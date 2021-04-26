@@ -1,0 +1,34 @@
+tleap=$AMBERHOME/bin/tleap 
+basedir=leap
+ 
+$tleap -f - <<_EOF
+
+# load the AMBER force fields 
+source leaprc.protein.ff14SB
+source leaprc.gaff
+source leaprc.water.tip3p
+loadAmberParams frcmod.ionsjc_tip3p
+
+# load force field parameters for ligand 1 and 2
+loadoff $basedir/%ONE%.lib 
+loadoff $basedir/%TWO%.lib
+
+# load the coordinates and create the complex, the loaded file contains no ligands for the protein
+ligands = loadpdb $basedir/%ONE%_%TWO%.pdb 
+complex = loadpdb $basedir/%PROT%.pdb 
+complex = combine {ligands complex}
+ 
+# create ligands in solution
+solvateOct ligands TIP3PBOX 20.0
+addIonsRand ligands Na+ 13 Cl- 13
+savepdb ligands ligands_premd.pdb
+saveamberparm ligands ligands_premd.parm7 ligands_premd.rst7 
+
+# create complex in solution
+addions complex Cl- 7
+solvateOct complex TIP3PBOX 12.0
+addIonsRand complex Na+ 44 Cl- 44
+savepdb complex complex_premd.pdb
+saveamberparm complex complex_premd.parm7 complex_premd.rst7 
+quit
+_EOF  

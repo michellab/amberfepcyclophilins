@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+# execute all runs
+
+s_dir=$(cd setup ; pwd)
+fe_dir=$(cd free_energy ; pwd)
+
+cd $s_dir
+
+bash 1_leap.sh ;
+bash 2_run_md.sh ;
+
+cd ..
+
+cd $fe_dir
+
+. ./windows
+
+for system in complex ligands; do
+  cd $system
+  for w in $windows; do
+     cd $w
+     ln -sf $s_dir/$system.parm7 start.parm7
+     ln -sf $s_dir/$system.rst7  start.rst7
+     cd ..
+  done
+  cd ..
+done
+
+bash submit_ligands.sh ;
+bash submit_complex.sh ;
+
+cd ..
+bash repeats.sh
+
+echo "Finished"

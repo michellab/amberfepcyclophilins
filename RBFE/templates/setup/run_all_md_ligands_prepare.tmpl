@@ -1,0 +1,23 @@
+#! /bin/bash -fexport
+
+cuda=$AMBERHOME/bin/pmemd.cuda
+prmtop=../ligands_premd.parm7
+
+trans="%TRANS%"
+
+echo "setup $trans minimising 1 ligands..."
+ export CUDA_VISIBLE_DEVICES=%%
+ $cuda -O -i min1.in -p $prmtop -c ../ligands_premd.rst7 -ref ../ligands_premd.rst7 -o min1.out -e min1.en -inf min1.info -r min1.rst7 -l min1.log
+
+echo "setup $trans minimising 2 ligands..."
+ export CUDA_VISIBLE_DEVICES=%%
+ $cuda -O -i min2.in -p $prmtop -c min1.rst7 -ref min1.rst7 -o min2.out -e min2.en -inf min2.info -r min2.rst7 -l min2.log
+
+echo "setup $trans heating ligands..."
+ export CUDA_VISIBLE_DEVICES=%%
+ $cuda -O -i heat.in -p $prmtop -c min2.rst7 -ref min2.rst7 -o heat.out -e heat.en -inf heat.info -r heat.rst7 -x heat.nc -l heat.log
+
+echo "setup $trans pressurising ligands..."
+ export CUDA_VISIBLE_DEVICES=%%
+ $cuda -O -i press.in -p $prmtop -c heat.rst7 -ref heat.rst7 -o press.out -e press.en -inf press.info -r press.rst7 -x press.nc -l press.log
+

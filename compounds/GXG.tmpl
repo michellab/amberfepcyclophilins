@@ -1,0 +1,9 @@
+source /home/adele/amber20/dat/leap/cmd/oldff/leaprc.ff99SB 
+source leaprc.gaff 
+%L%=loadmol2 %L%.mol2 
+loadamberparams %L%.frcmod 
+check %L%
+saveoff %L% %L%.lib 
+saveamberparm %L% %L%.prmtop %L%.rst7 
+savepdb %L% %L%.pdb
+quit

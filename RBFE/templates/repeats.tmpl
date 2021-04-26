@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+#repeats
+
+mdrun=$AMBERHOME/bin/pmemd.cuda
+
+trans="%TRANS%"
+
+current_dir=$(pwd)
+
+cd free_energy
+    . ./windows
+    for system in complex ligands; do
+        cd $system
+          for w in $windows; do
+              cd $w
+                  echo "Production for $trans, $system, $w, ti002..."
+                  export CUDA_VISIBLE_DEVICES=%%
+                  $mdrun -i prod.in -c heat.rst7 -ref heat.rst7 -p start.parm7 -O -o ti002.out -inf ti002.info -e ti002.en -r ti002.rst7 -x ti002.nc -l ti002.log ;
+                  echo "Production for $trans, $system, $w, ti003..."
+                  export CUDA_VISIBLE_DEVICES=%%
+                  $mdrun -i prod.in -c heat.rst7 -ref heat.rst7 -p start.parm7 -O -o ti003.out -inf ti003.info -e ti003.en -r ti003.rst7 -x ti003.nc -l ti003.log
+              cd ..
+          done
+        cd ..
+    done
+cd $current_dir
+
